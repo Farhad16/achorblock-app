@@ -44,10 +44,12 @@ const Login = () => {
             }`}
           />
           {errors.email && (
-            <p className="text-red-500 text-xs mt-1">{errors.email.message}</p>
+            <p className="text-[#F04438] text-sm mt-1">
+              {errors.email.message}
+            </p>
           )}
         </div>
-        <div className="mb-6">
+        <div className="mb-8">
           <label
             htmlFor="password"
             className="text-sm font-medium text-[#344054]"
@@ -65,7 +67,7 @@ const Login = () => {
             }`}
           />
           {errors.password && (
-            <p className="text-red-500 text-xs mt-1">
+            <p className="text-[#F04438] text-sm mt-1">
               {errors.password.message}
             </p>
           )}

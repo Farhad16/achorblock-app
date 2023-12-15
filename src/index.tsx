@@ -3,8 +3,8 @@ import ReactDOM from "react-dom/client";
 import "./index.css";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import "./index.css";
-import Login from "./components/Login";
-import Registration from "./components/Registration";
+import Login from "./pages/Login";
+import Registration from "./pages/Registration";
 import Users from "./pages/users";
 import Dashboard from "./pages/dashboard";
 
