@@ -19,7 +19,7 @@ const DataTable: React.FC<TableProps> = ({ data, columns }) => {
       useSortBy,
       useRowSelect,
       (hooks) => {
-        hooks.visibleColumns.push((columns) => {
+        hooks.visibleColumns.push((columns: any) => {
           return [
             {
               id: "selection",
