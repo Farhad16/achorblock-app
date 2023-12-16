@@ -7,12 +7,10 @@ import Login from "./pages/Login";
 import Registration from "./pages/Registration";
 import Users from "./pages/users";
 import Dashboard from "./pages/dashboard";
+import Layout from "./components/Layout";
+import ErrorPage from "./components/Errorpage";
 
 const router = createBrowserRouter([
-  {
-    path: "/",
-    element: <div>Home</div>,
-  },
   {
     path: "/login",
     element: <Login />,
@@ -22,12 +20,19 @@ const router = createBrowserRouter([
     element: <Registration />,
   },
   {
-    path: "/users",
-    element: <Users />,
-  },
-  {
-    path: "/dashboard",
-    element: <Dashboard />,
+    path: "/",
+    element: <Layout />,
+    errorElement: <ErrorPage />,
+    children: [
+      {
+        path: "/users",
+        element: <Users />,
+      },
+      {
+        path: "/dashboard",
+        element: <Dashboard />,
+      },
+    ],
   },
 ]);
 
