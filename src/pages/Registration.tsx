@@ -2,12 +2,15 @@ import { Divider } from "@mui/material";
 import React from "react";
 import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
+import { signUpUser } from "../apis/auth.api";
+import { IUser } from "../types/shared";
 
 const Registration = () => {
   const {
     register,
     handleSubmit,
     formState: { errors },
+    setError,
   } = useForm({
     defaultValues: {
       email: "",
@@ -15,7 +18,29 @@ const Registration = () => {
     },
   });
 
-  const onSubmit = async (values: any) => {};
+  const onSubmit = async (values: IUser) => {
+    try {
+      if (!values.email) {
+        setError("email", { type: "manual", message: "The email is required" });
+        return;
+      }
+
+      if (!values.password) {
+        setError("password", {
+          type: "manual",
+          message: "The password is required",
+        });
+        return;
+      }
+
+      const response = await signUpUser(values);
+
+      // show toast here later
+      console.log("Registration successful:", response);
+    } catch (error) {
+      console.error("Registration failed:", error);
+    }
+  };
 
   // functionality will changes depends on the sign up steps
   const checkActive = (idx: number) => {
@@ -46,7 +71,7 @@ const Registration = () => {
             type="text"
             id="email"
             {...register("email")}
-            className={`mt-1 p-2 w-full rounded-lg border sm:min-w-[320px] ${
+            className={`mt-1 p-2 w-full rounded-lg border sm:min-w-[320px] focus:outline-none ${
               errors.email
                 ? "border-[#FDA29B] input-shadow-error"
                 : "border-[#d6bbfb] input-shadow-success"
@@ -69,7 +94,7 @@ const Registration = () => {
             type="password"
             id="password"
             {...register("password")}
-            className={`mt-1 p-2 w-full rounded-lg border ${
+            className={`mt-1 p-2 w-full rounded-lg border focus:outline-none ${
               errors.password
                 ? "border-[#FDA29B] input-shadow-error"
                 : "border-[#d6bbfb] input-shadow-success"

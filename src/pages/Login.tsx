@@ -37,7 +37,7 @@ const Login = () => {
             type="text"
             id="email"
             {...register("email")}
-            className={`mt-1 p-2 w-full rounded-lg border sm:min-w-[320px] ${
+            className={`mt-1 p-2 w-full rounded-lg border sm:min-w-[320px] focus:outline-none ${
               errors.email
                 ? "border-[#FDA29B] input-shadow-error"
                 : "border-[#d6bbfb] input-shadow-success"
@@ -60,7 +60,7 @@ const Login = () => {
             type="password"
             id="password"
             {...register("password")}
-            className={`mt-1 p-2 w-full rounded-lg border ${
+            className={`mt-1 p-2 w-full rounded-lg border focus:outline-none ${
               errors.password
                 ? "border-[#FDA29B] input-shadow-error"
                 : "border-[#d6bbfb] input-shadow-success"
