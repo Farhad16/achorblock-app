@@ -15,7 +15,7 @@ import { Link, NavLink } from "react-router-dom";
 
 const pages = [
   { name: "Home", link: "/" },
-  { name: "Dashboard", link: "/dashboard" },
+  { name: "Users", link: "/users" },
   { name: "Projects", link: "/projects" },
   { name: "Tasks", link: "/tasks" },
   { name: "Reporting", link: "/reporting" },
