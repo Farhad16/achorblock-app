@@ -9,3 +9,12 @@ export const signUpUser = async (userData: IUser) => {
     throw error;
   }
 };
+
+export const signInUser = async (userData: IUser) => {
+  try {
+    const response = await axiosInstance.post("/api/login", userData);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};

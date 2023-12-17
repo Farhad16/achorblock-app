@@ -12,10 +12,6 @@ function Users() {
   const [page, setPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(2);
 
-  const handleChange = (e: any) => {
-    // setSearchKey(e.target.value);
-  };
-
   const lastItemIndex = page * itemsPerPage;
   const firstItemIndex = lastItemIndex - itemsPerPage;
 

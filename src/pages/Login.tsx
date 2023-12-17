@@ -1,11 +1,14 @@
 import React from "react";
 import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
+import { IUser } from "../types/shared";
+import { signInUser } from "../apis/auth.api";
 
 const Login = () => {
   const {
     register,
     handleSubmit,
+    setError,
     formState: { errors },
   } = useForm({
     defaultValues: {
@@ -14,7 +17,29 @@ const Login = () => {
     },
   });
 
-  const onSubmit = async (values: any) => {};
+  const onSubmit = async (values: IUser) => {
+    try {
+      if (!values.email) {
+        setError("email", { type: "manual", message: "The email is required" });
+        return;
+      }
+
+      if (!values.password) {
+        setError("password", {
+          type: "manual",
+          message: "The password is required",
+        });
+        return;
+      }
+
+      const response = await signInUser(values);
+
+      // show toast here later
+      console.log("Registration successful:", response);
+    } catch (error) {
+      console.error("Registration failed:", error);
+    }
+  };
 
   return (
     <div className="flex items-center justify-center min-h-screen sm:p-8 p-6">
