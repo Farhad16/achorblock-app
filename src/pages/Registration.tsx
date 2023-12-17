@@ -1,9 +1,11 @@
-import { Divider } from "@mui/material";
+import { CircularProgress, Divider } from "@mui/material";
 import React from "react";
 import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
-import { signUpUser } from "../apis/auth.api";
 import { IUser } from "../types/shared";
+import { useDispatch, useSelector } from "react-redux";
+import { setLoading, setAuthError } from "../feature/auth/auth.slice";
+import { signUp } from "../feature/auth/auth.thunk";
 
 const Registration = () => {
   const {
@@ -17,6 +19,9 @@ const Registration = () => {
       password: "",
     },
   });
+
+  const dispatch = useDispatch();
+  const { loading } = useSelector((state: any) => state.auth);
 
   const onSubmit = async (values: IUser) => {
     try {
@@ -33,11 +38,10 @@ const Registration = () => {
         return;
       }
 
-      const response = await signUpUser(values);
-
-      // show toast here later
-      console.log("Registration successful:", response);
-    } catch (error) {
+      dispatch(setLoading());
+      await dispatch<any>(signUp(values));
+    } catch (error: any) {
+      dispatch(setAuthError(error.message || "An error has occurred"));
       console.error("Registration failed:", error);
     }
   };
@@ -119,7 +123,11 @@ const Registration = () => {
           type="submit"
           className="bg-[#6941C6] text-white px-4 py-2 rounded-lg hover:bg-blue-600 focus:outline-none outline-none w-full h-[44px] font-semibold"
         >
-          Sign Up
+          {loading ? (
+            <CircularProgress sx={{ color: "white" }} size={26} />
+          ) : (
+            "Sign Up"
+          )}
         </button>
         <p className="mt-4 text-[#B0B7C3]">
           Already have an account?{" "}

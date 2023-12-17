@@ -9,6 +9,9 @@ import Users from "./pages/users";
 import Dashboard from "./pages/dashboard";
 import Layout from "./components/Layout";
 import ErrorPage from "./components/Errorpage";
+import { Provider } from "react-redux";
+import store from "./store/store";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 const router = createBrowserRouter([
   {
@@ -26,11 +29,19 @@ const router = createBrowserRouter([
     children: [
       {
         path: "/users",
-        element: <Users />,
+        element: (
+          <ProtectedRoute>
+            <Users />
+          </ProtectedRoute>
+        ),
       },
       {
         path: "/dashboard",
-        element: <Dashboard />,
+        element: (
+          <ProtectedRoute>
+            <Dashboard />
+          </ProtectedRoute>
+        ),
       },
     ],
   },
@@ -42,6 +53,8 @@ const root = ReactDOM.createRoot(
 
 root.render(
   <React.StrictMode>
-    <RouterProvider router={router} />
+    <Provider store={store}>
+      <RouterProvider router={router} />
+    </Provider>
   </React.StrictMode>
 );
