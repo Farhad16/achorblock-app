@@ -43,7 +43,7 @@ const DataTable: React.FC<TableProps> = ({ data, columns }) => {
       <div className="w-full overflow-x-auto">
         <table
           {...getTableProps()}
-          className="w-full bg-white rounded-xl text-black font-normal text-sm"
+          className="w-full bg-white rounded-xl text-black font-normal text-sm overflow-x-auto"
         >
           <thead>
             {headerGroups.map((headerGroup: any) => (
