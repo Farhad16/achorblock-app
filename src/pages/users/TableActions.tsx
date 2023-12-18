@@ -2,6 +2,7 @@
 import { IconButton } from "@mui/material";
 
 const TableActions = ({ row }: any) => {
+  console.log(row);
   return (
     <div className="flex flex-row gap-2 items-center mr-2">
       <IconButton>

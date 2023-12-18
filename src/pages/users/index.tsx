@@ -4,19 +4,41 @@ import AddIcon from "@mui/icons-material/Add";
 import DataTable from "./DataTable";
 import { columnData, dummydata } from "./dummy.data";
 import Pagination from "./Pagination";
+import { useGetUsersQuery } from "../../feature/user/api.slice";
 
 function Users() {
   const columns: any = useMemo(() => columnData, []);
-  const data: any = useMemo(() => dummydata, []);
 
   const [page, setPage] = useState(1);
-  const [itemsPerPage, setItemsPerPage] = useState(2);
+  const [itemsPerPage, setItemsPerPage] = useState(6);
 
-  const lastItemIndex = page * itemsPerPage;
-  const firstItemIndex = lastItemIndex - itemsPerPage;
+  const {
+    data: usersData,
+    error,
+    isLoading,
+  } = useGetUsersQuery({
+    page,
+    itemsPerPage,
+  });
 
-  const mainResult = data.slice(firstItemIndex, lastItemIndex);
-  const numberOfPages = Math.ceil(data.length / itemsPerPage);
+  if (isLoading) {
+    return <p>Loading...</p>;
+  }
+
+  if (error) {
+    return <p>Error: </p>;
+  }
+
+  const mainResult = usersData?.data || [];
+  const numberOfPages = Math.ceil(usersData?.total / itemsPerPage);
+
+  const combinedArray = mainResult.map((user: any) => {
+    const matchingDummyData = dummydata.find((dummy) => dummy.id === user.id);
+    return {
+      ...user,
+      ...matchingDummyData,
+    };
+  });
 
   return (
     <div className="bg-white w-full min-h-screen overflow-hidden sm:px-6 py-6 flex flex-col gap-4">
@@ -35,7 +57,7 @@ function Users() {
       </div>
 
       <div className="flex flex-col container-shadow border rounded-lg mt-6">
-        <DataTable data={mainResult} columns={columns} />
+        <DataTable data={combinedArray} columns={columns} />
         {numberOfPages > 0 && (
           <div className="flex justify-center items-center pb-2">
             <Pagination

@@ -1,7 +1,7 @@
 import { CircularProgress, Divider } from "@mui/material";
 import React from "react";
 import { useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { IUser } from "../types/shared";
 import { useDispatch, useSelector } from "react-redux";
 import { setLoading, setAuthError } from "../feature/auth/auth.slice";
@@ -23,6 +23,8 @@ const Registration = () => {
   const dispatch = useDispatch();
   const { loading } = useSelector((state: any) => state.auth);
 
+  const navigate = useNavigate();
+
   const onSubmit = async (values: IUser) => {
     try {
       if (!values.email) {
@@ -40,6 +42,7 @@ const Registration = () => {
 
       dispatch(setLoading());
       await dispatch<any>(signUp(values));
+      navigate("/");
     } catch (error: any) {
       dispatch(setAuthError(error.message || "An error has occurred"));
       console.error("Registration failed:", error);

@@ -10,7 +10,7 @@ interface AuthState {
 
 const initialState: AuthState = {
   user: null,
-  isAuthenticated: false,
+  isAuthenticated: localStorage.getItem("isAuthenticated") === "true",
   loading: false,
   error: null,
 };
@@ -24,12 +24,14 @@ const authSlice = createSlice({
       state.isAuthenticated = true;
       state.loading = false;
       state.error = null;
+      localStorage.setItem("isAuthenticated", "true");
     },
     setLogout: (state) => {
       state.user = null;
       state.isAuthenticated = false;
       state.loading = false;
       state.error = null;
+      localStorage.removeItem("isAuthenticated");
     },
     setAuthError: (state, action: PayloadAction<any>) => {
       state.error = action.payload;
