@@ -11,7 +11,9 @@ import MenuItem from "@mui/material/MenuItem";
 import Popover from "@mui/material/Popover";
 import Typography from "@mui/material/Typography";
 import React, { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Link, NavLink } from "react-router-dom";
+import { setLogout } from "../feature/auth/auth.slice";
 
 const pages = [
   { name: "Home", link: "/" },
@@ -23,7 +25,11 @@ const pages = [
 
 const Navbar = () => {
   const [anchorEl, setAnchorEl] = useState(null);
-  const user: any = null;
+  const dispatch = useDispatch();
+
+  const isAuthenticated = useSelector(
+    (state: any) => state.auth.isAuthenticated
+  );
 
   const handleAvatarClick = (event: any) => {
     setAnchorEl(event.currentTarget);
@@ -118,8 +124,13 @@ const Navbar = () => {
         </div>
         <div className="flex items-center gap-4">
           <>
-            {user ? (
-              <p className="ml-4 flex gap-2 items-center cursor-pointer font-semibold text-white">
+            {isAuthenticated ? (
+              <p
+                className="ml-4 flex gap-2 items-center cursor-pointer font-semibold text-white"
+                onClick={() => {
+                  dispatch(setLogout());
+                }}
+              >
                 Logout
               </p>
             ) : (
@@ -152,12 +163,6 @@ const Navbar = () => {
             }}
           >
             <div className="flex flex-col p-4 gap-2 font-medium">
-              {user && (
-                <div className="flex flex-col text-sm ml-1">
-                  <p className="font-medium">{user?.name}</p>
-                  <p className="text-xs opacity-50">{user?.email}</p>
-                </div>
-              )}
               <p className="text-sm flex gap-2 items-center cursor-pointer">
                 <AccountCircleIcon />
                 Profile
@@ -165,8 +170,13 @@ const Navbar = () => {
               <p className="text-sm flex gap-2 items-center cursor-pointer">
                 <SettingsIcon /> Settings
               </p>
-              {user ? (
-                <p className="text-sm flex gap-2 items-center cursor-pointer">
+              {isAuthenticated ? (
+                <p
+                  className="text-sm flex gap-2 items-center cursor-pointer"
+                  onClick={() => {
+                    dispatch(setLogout());
+                  }}
+                >
                   <LogoutIcon />
                   Logout
                 </p>
