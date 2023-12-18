@@ -23,10 +23,7 @@ const pages = [
 
 const Navbar = () => {
   const [anchorEl, setAnchorEl] = useState(null);
-  const user = {
-    name: "user",
-    email: "user@example.com",
-  };
+  const user: any = null;
 
   const handleAvatarClick = (event: any) => {
     setAnchorEl(event.currentTarget);
@@ -126,9 +123,12 @@ const Navbar = () => {
                 Logout
               </p>
             ) : (
-              <p className="ml-4 flex gap-2 items-center cursor-pointer font-semibold text-white">
+              <Link
+                to="/login"
+                className="ml-4 flex gap-2 items-center cursor-pointer font-semibold text-white"
+              >
                 Login
-              </p>
+              </Link>
             )}
           </>
           <Avatar
@@ -171,9 +171,12 @@ const Navbar = () => {
                   Logout
                 </p>
               ) : (
-                <p className="text-sm flex gap-2 items-center cursor-pointer">
+                <Link
+                  to="/login"
+                  className="text-sm flex gap-2 items-center cursor-pointer"
+                >
                   <LoginIcon /> Login
-                </p>
+                </Link>
               )}
             </div>
           </Popover>

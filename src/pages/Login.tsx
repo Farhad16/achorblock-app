@@ -1,11 +1,17 @@
 import React from "react";
 import { useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { IUser } from "../types/shared";
+import { useDispatch, useSelector } from "react-redux";
+import { setLoading, setAuthError } from "../feature/auth/auth.slice";
+import { signIn } from "../feature/auth/auth.thunk";
+import { CircularProgress } from "@mui/material";
 
 const Login = () => {
   const {
     register,
     handleSubmit,
+    setError,
     formState: { errors },
   } = useForm({
     defaultValues: {
@@ -13,8 +19,39 @@ const Login = () => {
       password: "",
     },
   });
+  const dispatch = useDispatch();
+  const { loading } = useSelector((state: any) => state.auth);
 
-  const onSubmit = async (values: any) => {};
+  const navigate = useNavigate();
+  const location = useLocation();
+  const params = new URLSearchParams(location.search);
+  const redirectPath = params.get("redirect");
+
+  const onSubmit = async (values: IUser) => {
+    try {
+      if (!values.email) {
+        setError("email", { type: "manual", message: "The email is required" });
+        return;
+      }
+
+      if (!values.password) {
+        setError("password", {
+          type: "manual",
+          message: "The password is required",
+        });
+        return;
+      }
+
+      dispatch(setLoading());
+      await dispatch<any>(signIn(values));
+      navigate(redirectPath || "/dashboard");
+      // show toast here later
+      console.log("Sign-in successful");
+    } catch (error: any) {
+      dispatch(setAuthError(error.message || "An error has occurred"));
+      console.error("Sign-in failed:", error);
+    }
+  };
 
   return (
     <div className="flex items-center justify-center min-h-screen sm:p-8 p-6">
@@ -37,7 +74,7 @@ const Login = () => {
             type="text"
             id="email"
             {...register("email")}
-            className={`mt-1 p-2 w-full rounded-lg border sm:min-w-[320px] ${
+            className={`mt-1 p-2 w-full rounded-lg border sm:min-w-[320px] focus:outline-none ${
               errors.email
                 ? "border-[#FDA29B] input-shadow-error"
                 : "border-[#d6bbfb] input-shadow-success"
@@ -60,7 +97,7 @@ const Login = () => {
             type="password"
             id="password"
             {...register("password")}
-            className={`mt-1 p-2 w-full rounded-lg border ${
+            className={`mt-1 p-2 w-full rounded-lg border focus:outline-none ${
               errors.password
                 ? "border-[#FDA29B] input-shadow-error"
                 : "border-[#d6bbfb] input-shadow-success"
@@ -76,7 +113,11 @@ const Login = () => {
           type="submit"
           className="bg-[#6941C6] text-white px-4 py-2 rounded-lg hover:bg-blue-600 focus:outline-none outline-none w-full h-[44px] font-semibold"
         >
-          Sign In
+          {loading ? (
+            <CircularProgress sx={{ color: "white" }} size={26} />
+          ) : (
+            "Sign In"
+          )}
         </button>
         <p className="mt-4 text-[#B0B7C3]">
           Don't have an account?{" "}

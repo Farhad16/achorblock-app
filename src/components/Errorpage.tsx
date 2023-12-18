@@ -1,6 +1,8 @@
 import React from "react";
 import { Typography, Box } from "@mui/material";
 import SentimentVeryDissatisfiedIcon from "@mui/icons-material/SentimentVeryDissatisfied";
+import ArrowRightAltIcon from "@mui/icons-material/ArrowRightAlt";
+import { Link } from "react-router-dom";
 
 const ErrorPage = () => {
   return (
@@ -16,8 +18,11 @@ const ErrorPage = () => {
         Sorry, something went wrong.
       </Typography>
       <p className="text-gray-500">
-        Page you are looking for is now available.
+        Page you are looking for is not available.
       </p>
+      <Link to="/" className="text-blue-500">
+        Go to homepage <ArrowRightAltIcon />
+      </Link>
     </Box>
   );
 };
